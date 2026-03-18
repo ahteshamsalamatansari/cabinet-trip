@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧳 Cabinet Trip 2026 — Expense Calculator
 
-## Getting Started
+A stunning, production-grade trip expense calculator built with **Next.js 14+**, **TypeScript**, and **Tailwind CSS**. Track shared expenses across 7 members, manage a COMPANY sponsor account, split costs equally, and export reports as CSV.
 
-First, run the development server:
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/your-repo/cabinet-trip)
+
+## ✨ Features
+
+- 🎬 **Stunning Hero Section** — Dramatic gradient, animated tagline, bokeh effects
+- 🏢 **COMPANY Account** — Sponsor fund with deposit/expense deduction priority
+- 👥 **7 Pre-loaded Members** — Equal split, running balance, carryforward logic
+- 📅 **Day Tabs** — Day 1 / Day 2 / Summary views
+- ➕ **Dynamic Expenses** — Real-time split calculations with live preview
+- ✅ **Mark as Paid** — Toggle per member with undo support
+- 📥 **CSV Export** — Full trip report download on settlement day
+- 📱 **Responsive** — Dark theme, mobile-first design
+
+## 🚀 Getting Started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev       # local dev on localhost:3000
+npm run build     # production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Next.js 14+** (App Router)
+- **TypeScript** (strict mode)
+- **Tailwind CSS**
+- **lucide-react** icons
+- Pure client-side — no backend, no localStorage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📁 Project Structure
 
-## Learn More
+```
+/app
+  layout.tsx         — Root layout with metadata
+  page.tsx           — Home page with all state management
+  globals.css        — Tailwind + custom animations
+/components
+  Hero.tsx           — Full-screen hero section
+  CompanyCard.tsx    — COMPANY account card
+  MemberCard.tsx     — Individual member card
+  ExpenseModal.tsx   — Add expense modal
+  DepositModal.tsx   — Deposit to company modal
+  DayView.tsx        — Per-day expense table
+  SummaryTab.tsx     — Trip summary
+  CSVExport.tsx      — CSV download button
+  Toast.tsx          — Toast notifications
+/lib
+  types.ts           — TypeScript interfaces
+  calculations.ts   — Financial logic
+  csvExport.ts       — CSV generation
+  data.ts            — Initial state & utilities
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 📝 License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
