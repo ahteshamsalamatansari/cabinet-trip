@@ -27,6 +27,8 @@ import { Plus } from 'lucide-react';
 
 type ActiveTab = 1 | 2 | 'summary';
 
+import { supabase } from '@/lib/supabase';
+
 export default function Home() {
   const [company, setCompany] = useState<CompanyAccount>(createInitialCompany);
   const [members, setMembers] = useState<Member[]>(createInitialMembers);
@@ -39,25 +41,54 @@ export default function Home() {
 
   const dashboardRef = useRef<HTMLDivElement>(null);
 
-  // --- Load Data on Mount ---
+  // --- Load Data from Supabase on Mount ---
   useEffect(() => {
-    const savedCompany = localStorage.getItem('cabinet-trip-company');
-    const savedMembers = localStorage.getItem('cabinet-trip-members');
-    const savedExpenses = localStorage.getItem('cabinet-trip-expenses');
+    async function loadData() {
+      try {
+        const { data, error } = await supabase
+          .from('trip_state')
+          .select('*')
+          .eq('id', 1)
+          .single();
 
-    if (savedCompany) setCompany(JSON.parse(savedCompany));
-    if (savedMembers) setMembers(JSON.parse(savedMembers));
-    if (savedExpenses) setExpenses(JSON.parse(savedExpenses));
-    
-    setIsLoaded(true);
+        if (data && !error) {
+          if (data.company) setCompany(data.company);
+          if (data.members && data.members.length > 0) setMembers(data.members);
+          if (data.expenses) setExpenses(data.expenses);
+        }
+      } catch (e) {
+        console.error('Failed to load data from Supabase', e);
+      } finally {
+        setIsLoaded(true);
+      }
+    }
+    loadData();
   }, []);
 
-  // --- Save Data on Change ---
+  // --- Save Data to Supabase on Change (Debounced) ---
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem('cabinet-trip-company', JSON.stringify(company));
-      localStorage.setItem('cabinet-trip-members', JSON.stringify(members));
-      localStorage.setItem('cabinet-trip-expenses', JSON.stringify(expenses));
+      const saveData = async () => {
+        try {
+          await supabase
+            .from('trip_state')
+            .update({
+              company,
+              members,
+              expenses,
+              updated_at: new Date().toISOString(),
+            })
+            .eq('id', 1);
+        } catch (e) {
+          console.error('Failed to save data to Supabase', e);
+        }
+      };
+
+      const timeoutId = setTimeout(() => {
+        saveData();
+      }, 1000); // 1-second debounce to prevent spamming API
+
+      return () => clearTimeout(timeoutId);
     }
   }, [company, members, expenses, isLoaded]);
 
