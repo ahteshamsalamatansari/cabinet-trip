@@ -6,6 +6,10 @@ const withPWA = withPWAInit({
   disable: process.env.NODE_ENV === 'development',
 });
 
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  webpack: (config) => {
+    return config;
+  },
+};
 
 export default withPWA(nextConfig);
